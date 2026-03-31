@@ -23,10 +23,21 @@ public class MovimentController : NetworkBehaviour
             Vector3 direcao = new Vector3(horizontal, 0, vertical);
             if (direcao.magnitude > 0.1f)
             {
+                #region 1ª forma de movimentação
+                ////movimento do personagem
+                //characterController.Move(direcao * speed * Runner.DeltaTime);
+                ////rotacao do personagem
+                //transform.rotation = Quaternion.LookRotation(direcao);
+                #endregion
+
+                #region 2ª forma de movimentação
                 //movimento do personagem
-                characterController.Move(direcao * speed * Runner.DeltaTime);
-                //rotacao do personagem
-                transform.rotation = Quaternion.LookRotation(direcao);
+                characterController.Move(
+                transform.forward * vertical * speed*Runner.DeltaTime);
+                //rotação do personagem
+                float velocidadeRotacao = speed * 50f;
+                transform.Rotate(new Vector3(0, horizontal * velocidadeRotacao * Runner.DeltaTime, 0));
+                #endregion
                 //animacao do personagem
                 animator.SetBool("podeandar" , true);
             }
