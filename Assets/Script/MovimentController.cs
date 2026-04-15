@@ -9,6 +9,15 @@ public class MovimentController : NetworkBehaviour
     public float speed = 5f;
     public Animator animator;
 
+    [Networked] public int Score { get; set; }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_AddScore(int points)
+    {
+        Score += points;
+    }
+
+
     public void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -25,7 +34,7 @@ public class MovimentController : NetworkBehaviour
             {
                 #region 1ª forma de movimentação
                 ////movimento do personagem
-                //characterController.Move(direcao * speed * Runner.DeltaTime);
+                //characterController.Move(direcao * velocidade * Runner.DeltaTime);
                 ////rotacao do personagem
                 //transform.rotation = Quaternion.LookRotation(direcao);
                 #endregion
@@ -33,21 +42,23 @@ public class MovimentController : NetworkBehaviour
                 #region 2ª forma de movimentação
                 //movimento do personagem
                 characterController.Move(
-                transform.forward * vertical * speed*Runner.DeltaTime);
-                //rotação do personagem
+                    transform.forward * vertical * speed * Runner.DeltaTime);
+                //rotacao do personagem
                 float velocidadeRotacao = speed * 50f;
-                transform.Rotate(new Vector3(0, horizontal * velocidadeRotacao * Runner.DeltaTime, 0));
+                transform.Rotate(new Vector3(0,
+                    horizontal * velocidadeRotacao * Runner.DeltaTime,
+                    0));
                 #endregion
+
                 //animacao do personagem
-                animator.SetBool("podeandar" , true);
+                animator.SetBool("podeandar", true);
             }
-            else 
-            { 
-                animator.SetBool("podeandar" , false);
+            else
+            {
+                animator.SetBool("podeandar", false);
             }
 
 
-        
         }
     }
 }
