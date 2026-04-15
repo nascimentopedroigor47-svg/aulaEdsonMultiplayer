@@ -6,6 +6,12 @@ using Fusion;
 public class CameraController : NetworkBehaviour
 {
     public Camera mainCamera;
+
+    private void Awake()
+    {
+        mainCamera = GameObject.Find(".").GetComponent<Camera>(); 
+    }
+
     public override void Spawned()
     {
         if (HasInputAuthority)
